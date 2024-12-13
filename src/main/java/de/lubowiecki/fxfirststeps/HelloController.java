@@ -1,8 +1,10 @@
 package de.lubowiecki.fxfirststeps;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import java.io.*;
@@ -15,7 +17,7 @@ import java.util.ResourceBundle;
 public class HelloController implements Initializable {
 
     @FXML
-    private Label output;
+    private ListView<String> output;
 
     @FXML
     private TextField input;
@@ -33,11 +35,22 @@ public class HelloController implements Initializable {
     }
 
     private void print() {
-        StringBuilder sb = new StringBuilder();
-        for(String line : eintraege)
-            sb.append(line).append("\n");
 
-        output.setText(sb.toString());
+//        StringBuilder sb = new StringBuilder();
+//        for(String line : eintraege)
+//            sb.append(line).append("\n");
+//
+//        output.setText(sb.toString());
+
+        // Einträge werden als eine ObservableList in das ListView geschrieben
+        output.setItems(FXCollections.observableList(eintraege));
+    }
+
+    @FXML
+    public void delete() {
+        String selected = output.getSelectionModel().getSelectedItem();
+        eintraege.remove(selected);
+        print();
     }
 
     private void saveToFile() {
